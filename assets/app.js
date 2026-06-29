@@ -172,3 +172,22 @@
   img.onerror=function(){buildFallback();};
   img.src='arrow-mark-t.png';
 })();
+
+/* Mobile nav — injected hamburger + slide-in menu (runs on every page) */
+(function(){
+  var nav=document.querySelector('.nav');
+  if(!nav||nav.querySelector('.nav-burger'))return;
+  var links=nav.querySelector('.nav-links');
+  var burger=document.createElement('button');
+  burger.className='nav-burger';burger.type='button';
+  burger.setAttribute('aria-label','Menu');burger.setAttribute('aria-expanded','false');
+  burger.innerHTML='<span></span><span></span><span></span>';
+  var backdrop=document.createElement('div');backdrop.className='nav-backdrop';
+  function setOpen(o){nav.classList.toggle('open',o);burger.setAttribute('aria-expanded',o?'true':'false');document.body.style.overflow=o?'hidden':'';}
+  burger.addEventListener('click',function(e){e.stopPropagation();setOpen(!nav.classList.contains('open'));});
+  backdrop.addEventListener('click',function(){setOpen(false);});
+  if(links)links.addEventListener('click',function(e){if(e.target.closest('a'))setOpen(false);});
+  addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false);});
+  nav.insertBefore(burger,links||null);
+  nav.appendChild(backdrop);
+})();
