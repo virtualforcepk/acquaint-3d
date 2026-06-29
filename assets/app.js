@@ -170,5 +170,5 @@
   var img=new Image();
   img.onload=function(){buildFromImage(img);};
   img.onerror=function(){buildFallback();};
-  img.src='/arrow-mark-t.png';
+  img.src='arrow-mark-t.png';
 })();
