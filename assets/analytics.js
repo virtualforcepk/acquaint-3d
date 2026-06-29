@@ -6,7 +6,7 @@
  * no external requests, no cookies — so it's safe to ship as-is.
  */
 (function () {
-  var ID = 'G-XXXXXXXXXX'; // <-- replace with the real Measurement ID
+  var ID = 'G-WH20WVGTE3'; // Acquaint Media — GA4 Measurement ID (acquaintmedia.ai)
 
   // Guard: stay inert while the placeholder is in place.
   if (ID === 'G-XXXXXXXXXX' || !/^G-[A-Z0-9]{4,}$/.test(ID)) return;
