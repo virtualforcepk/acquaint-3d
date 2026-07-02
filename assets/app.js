@@ -152,7 +152,7 @@
     while(TG.length>wire)TG.splice((Math.random()*TG.length)|0,1);
     var mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;
     for(i=0;i<wire;i++){var g3=TG[i];if(g3.x<mnx)mnx=g3.x;if(g3.x>mxx)mxx=g3.x;if(g3.y<mny)mny=g3.y;if(g3.y>mxy)mxy=g3.y;}
-    var ctx2=(mnx+mxx)/2,cty=(mny+mxy)/2,SC2=7.0/Math.max(mxx-mnx,mxy-mny);
+    var ctx2=(mnx+mxx)/2,cty=(mny+mxy)/2,SC2=8.4/Math.max(mxx-mnx,mxy-mny);
     dragonCol=new Float32Array(N*3);
     var wi=0;
     for(i=0;i<N;i++){var p=parts[i];
@@ -250,8 +250,9 @@
       pos[k*3]=X;pos[k*3+1]=Y;pos[k*3+2]=Z;
     }
     geo.attributes.position.needsUpdate=true;
-    camera.position.x+=((mx*0.04)-camera.position.x)*0.04;
-    camera.position.y+=((my*0.04)-camera.position.y)*0.04;
+    var cmx=mx<-900?0:mx, cmy=my<-900?0:my; // no pointer yet -> keep the camera centered
+    camera.position.x+=((cmx*0.04)-camera.position.x)*0.04;
+    camera.position.y+=((cmy*0.04)-camera.position.y)*0.04;
     camera.lookAt(0,0,0);
     renderer.render(scene,camera);
     if(pctEl)pctEl.textContent=Math.round(pp*100)+'%';
