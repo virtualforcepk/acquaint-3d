@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page not found | Acquaint Media</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#06121a;color:#eef6f5;font-family:'Satoshi',system-ui,sans-serif;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:32px;
+  background-image:radial-gradient(58% 48% at 50% 52%,rgba(45,212,255,0.055),transparent 70%),
+                   radial-gradient(70% 60% at 50% 114%,rgba(52,211,153,0.09),transparent 70%);}
+h1{font-weight:600;letter-spacing:-0.03em;font-size:clamp(52px,10vw,120px);line-height:1}
+.grad{background:linear-gradient(120deg,#34d399,#2dd4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+p{color:#b8c6cc;font-size:clamp(15px,1.6vw,19px);line-height:1.6;margin:18px auto 30px;max-width:44ch}
+a{display:inline-block;background:#34d399;color:#03131c;padding:14px 28px;border-radius:100px;font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div>
+  <h1>4<span class="grad">0</span>4</h1>
+  <p>This page scattered into particles and never reformed. Let's point you back at something real.</p>
+  <a id="home" href="/">Back to home</a>
+</div>
+<script>
+/* Serve correctly on both the github.io subpath and the custom domain root. */
+if(location.pathname.indexOf('/acquaint-3d/')===0)document.getElementById('home').href='/acquaint-3d/';
+</script>
+</body>
+</html>

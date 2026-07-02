@@ -22,3 +22,22 @@
   gtag('js', new Date());
   gtag('config', ID);
 })();
+
+/* Conversion events — every "Book a call" (Calendly) click, by page + CTA text. */
+(function () {
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+  ready(function () {
+    document.body.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest && e.target.closest('a[href*="calendly.com"]');
+      if (!a || typeof window.gtag !== 'function') return;
+      window.gtag('event', 'book_call_click', {
+        event_category: 'conversion',
+        page_path: location.pathname,
+        cta_text: (a.textContent || '').trim().slice(0, 40)
+      });
+    }, true);
+  });
+})();
