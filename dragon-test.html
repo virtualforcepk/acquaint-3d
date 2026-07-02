@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dragon — design test</title>
+<style>
+:root{--green:#34d399;--cyan:#2dd4ff;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#06121a;color:#eef6f5;font-family:system-ui,sans-serif;overflow:hidden;height:100vh}
+#gl{position:fixed;inset:0;z-index:0;display:block}
+.atmos{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(60% 55% at 50% 52%,rgba(45,212,255,0.06),transparent 70%),
+             radial-gradient(70% 60% at 50% 110%,rgba(52,211,153,0.10),transparent 70%);}
+.hud{position:fixed;z-index:5;left:26px;top:22px}
+.hud h1{font-size:20px;font-weight:600;letter-spacing:-0.02em}
+.hud .grad{background:linear-gradient(120deg,var(--green),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hud p{font-size:12.5px;color:#8aa0a8;margin-top:6px;letter-spacing:.04em}
+.ctl{position:fixed;z-index:5;right:24px;bottom:20px;display:flex;gap:8px}
+.ctl button{background:rgba(255,255,255,.05);border:1px solid #274a59;color:#eef6f5;font:inherit;font-size:13px;padding:8px 14px;border-radius:100px;cursor:pointer}
+.ctl button:hover{border-color:var(--cyan)}
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div class="atmos"></div>
+<div class="hud">
+  <h1>Kung-fu <span class="grad">dragon</span> — design test</h1>
+  <p>move the cursor to part the energy · hold to scatter · it breathes &amp; flies on its own</p>
+</div>
+<div class="ctl">
+  <button id="reform">Reform</button>
+  <button id="toggleWave">Toggle flight</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  if(!window.THREE) return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cvs=document.getElementById('gl');
+  var W=innerWidth,H=innerHeight;
+  var renderer=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(W,H);
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(55,W/H,0.1,100);camera.position.set(0,0,8);
+
+  function sprite(){var c=document.createElement('canvas');c.width=c.height=64;var x=c.getContext('2d');
+    var g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,1)');
+    g.addColorStop(0.25,'rgba(255,255,255,0.85)');g.addColorStop(1,'rgba(255,255,255,0)');
+    x.fillStyle=g;x.fillRect(0,0,64,64);var t=new THREE.Texture(c);t.needsUpdate=true;return t;}
+  var tex=sprite();
+  var isMobile=W<760, N=isMobile?1500:2800;
+  var cG=new THREE.Color(0x34d399), cC=new THREE.Color(0x2dd4ff);
+
+  function shell(r0,r1){var u=Math.random(),v=Math.random();var th=u*6.283,ph=Math.acos(2*v-1),r=r0+Math.random()*(r1-r0);
+    return [r*Math.sin(ph)*Math.cos(th),r*Math.cos(ph)*0.85,r*Math.sin(ph)*Math.sin(th)];}
+
+  // ---- procedural kung-fu dragon (serpentine, head at right) ----
+  function spine(t){ // t: 0 tail .. 1 head
+    var x=-3.9+7.8*t;
+    var y=1.25*Math.sin(t*6.0+0.4)*(0.45+0.55*t);
+    return [x,y];
+  }
+  function bodyW(t){ return 0.16+0.6*t*(1-0.28*t); }
+  function dragonTargets(){
+    var P=[], i;
+    var nBody=Math.floor(N*0.46), nHead=Math.floor(N*0.14), nHorn=Math.floor(N*0.05),
+        nWhisk=Math.floor(N*0.10), nSpike=Math.floor(N*0.11), nLeg=Math.floor(N*0.10);
+    for(i=0;i<nBody;i++){var t=Math.random(),s=spine(t),w=bodyW(t);
+      P.push([s[0]+(Math.random()*2-1)*0.12, s[1]+(Math.random()*2-1)*w, (Math.random()*2-1)*0.45,t]);}
+    var hd=spine(1.0), hx=hd[0]+0.45, hy=hd[1]+0.18;
+    for(i=0;i<nHead;i++){var a=Math.random()*6.283,r=Math.sqrt(Math.random())*0.92;
+      P.push([hx+Math.cos(a)*r, hy+Math.sin(a)*r*0.82, (Math.random()*2-1)*0.5,1]);}
+    for(i=0;i<nHorn;i++){var u=Math.random(),side=(i%2)?1:0.6;
+      P.push([hx+0.25-u*0.9, hy+0.6+u*0.85*side+(Math.random()*2-1)*0.06, (Math.random()*2-1)*0.2,1]);}
+    for(i=0;i<nWhisk;i++){var u=Math.random(),side=(i%2)?1:-1;
+      P.push([hx+0.7+u*2.3, hy+side*0.22+Math.sin(u*7+side)*0.55*u+(Math.random()*2-1)*0.05, (Math.random()*2-1)*0.2,1.05]);}
+    for(i=0;i<nSpike;i++){var t=Math.random(),s=spine(t),w=bodyW(t),u=Math.random();
+      P.push([s[0]+(Math.random()*2-1)*0.05, s[1]+w+u*(0.3+0.45*t), (Math.random()*2-1)*0.15,t]);}
+    var legT=[0.32,0.56,0.8];
+    for(i=0;i<nLeg;i++){var lt=legT[i%3]+(Math.random()*2-1)*0.03,s=spine(lt),w=bodyW(lt),u=Math.random();
+      P.push([s[0]+(Math.random()*2-1)*0.16, s[1]-w-u*0.95, (Math.random()*2-1)*0.28,lt]);}
+    while(P.length<N){var t=Math.random(),s=spine(t),w=bodyW(t);
+      P.push([s[0], s[1]+(Math.random()*2-1)*w, (Math.random()*2-1)*0.45,t]);}
+    // normalize: center + scale to fit
+    var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+    for(i=0;i<P.length;i++){if(P[i][0]<minx)minx=P[i][0];if(P[i][0]>maxx)maxx=P[i][0];
+      if(P[i][1]<miny)miny=P[i][1];if(P[i][1]>maxy)maxy=P[i][1];}
+    var cx=(minx+maxx)/2,cy=(miny+maxy)/2,sc=7.6/Math.max(maxx-minx,maxy-miny);
+    for(i=0;i<P.length;i++){P[i][0]=(P[i][0]-cx)*sc;P[i][1]=(P[i][1]-cy)*sc;P[i][2]*=sc;}
+    return P;
+  }
+
+  var T=dragonTargets();
+  var parts=new Array(N), col=new Float32Array(N*3);
+  for(var k=0;k<N;k++){
+    var st=shell(5,9), tg=T[k];
+    parts[k]={sx:st[0],sy:st[1],sz:st[2],tx:tg[0],ty:tg[1],tz:tg[2],
+              ph:Math.random()*6.28, sp:0.25+Math.random()*0.35, seg:tg[3]};
+    var c=cG.clone().lerp(cC, tg[3]).multiplyScalar(1.12); // tail green -> head cyan
+    col[k*3]=Math.min(c.r,1);col[k*3+1]=Math.min(c.g,1);col[k*3+2]=Math.min(c.b,1);
+  }
+  var geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(N*3),3));
+  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+  scene.add(new THREE.Points(geo,new THREE.PointsMaterial({size:0.5,map:tex,vertexColors:true,transparent:true,opacity:0.16,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,sizeAttenuation:true})));
+  scene.add(new THREE.Points(geo,new THREE.PointsMaterial({size:0.12,map:tex,vertexColors:true,transparent:true,opacity:0.95,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false,sizeAttenuation:true})));
+
+  var mx=-999,my=-999,down=false,form=0,wave=true;
+  function setM(x,y){var nx=(x/W)*2-1,ny=-((y/H)*2-1),hh=Math.tan(55*Math.PI/360)*8,hw=hh*(W/H);mx=nx*hw;my=ny*hh;}
+  addEventListener('mousemove',function(e){setM(e.clientX,e.clientY);},{passive:true});
+  addEventListener('mousedown',function(){down=true;});addEventListener('mouseup',function(){down=false;});
+  addEventListener('touchmove',function(e){if(e.touches[0])setM(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  addEventListener('touchend',function(){down=false;});
+  document.getElementById('reform').onclick=function(){form=0;};
+  document.getElementById('toggleWave').onclick=function(){wave=!wave;};
+  addEventListener('resize',function(){W=innerWidth;H=innerHeight;renderer.setSize(W,H);camera.aspect=W/H;camera.updateProjectionMatrix();});
+
+  function ease(x){return x<0.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;}
+  var t0=performance.now(), pos=geo.attributes.position.array;
+  function frame(now){
+    requestAnimationFrame(frame);
+    var time=(now-t0)*0.001;
+    if(form<1) form=Math.min(form+0.006,1);           // auto-assemble intro
+    var e=ease(reduce?1:(down?Math.max(form-0.35,0):form));
+    var ry=reduce?0:Math.sin(time*0.12)*0.32, cY=Math.cos(ry),sY=Math.sin(ry);
+    var rad=down?3.4:1.7, str=down?2.6:0.8;
+    for(var k=0;k<N;k++){
+      var p=parts[k];
+      var bx=p.sx+(p.tx-p.sx)*e, by=p.sy+(p.ty-p.sy)*e, bz=p.sz+(p.tz-p.sz)*e;
+      if(wave && !reduce && e>0.5){                    // flight: traveling undulation along the body
+        var amp=(e)*0.32;
+        by+=Math.sin(p.tx*0.9 - time*1.6 + p.seg*1.5)*amp;
+        bz+=Math.cos(p.tx*0.7 - time*1.3)*amp*0.6;
+      }
+      var X=bx*cY - bz*sY, Z=bx*sY + bz*cY, Y=by;
+      if(!reduce){Y+=Math.sin(time*p.sp+p.ph)*0.05;X+=Math.cos(time*p.sp*0.8+p.ph)*0.035;
+        var dx=X-mx,dy=Y-my,d2=dx*dx+dy*dy;
+        if(d2<rad*rad){var dd=Math.sqrt(d2)||1e-4,ff=(1-dd/rad)*str;X+=dx/dd*ff;Y+=dy/dd*ff;}}
+      pos[k*3]=X;pos[k*3+1]=Y;pos[k*3+2]=Z;
+    }
+    geo.attributes.position.needsUpdate=true;
+    camera.position.x+=((mx*0.03)-camera.position.x)*0.04;
+    camera.position.y+=((my*0.03)-camera.position.y)*0.04;
+    camera.lookAt(0,0,0);
+    renderer.render(scene,camera);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
