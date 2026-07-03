@@ -1,0 +1,6 @@
+{
+  "redirects": [
+    { "source": "/app", "destination": "/", "permanent": true },
+    { "source": "/app/", "destination": "/", "permanent": true }
+  ]
+}
