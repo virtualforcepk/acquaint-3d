@@ -152,7 +152,9 @@
     while(TG.length>wire)TG.splice((Math.random()*TG.length)|0,1);
     var mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;
     for(i=0;i<wire;i++){var g3=TG[i];if(g3.x<mnx)mnx=g3.x;if(g3.x>mxx)mxx=g3.x;if(g3.y<mny)mny=g3.y;if(g3.y>mxy)mxy=g3.y;}
-    var ctx2=(mnx+mxx)/2,cty=(mny+mxy)/2,SC2=8.4/Math.max(mxx-mnx,mxy-mny);
+    var ctx2=(mnx+mxx)/2,cty=(mny+mxy)/2,
+      _fw=2*Math.tan(55*Math.PI/360)*8*(W/H),           // visible world-width at the dragon plane
+      SC2=Math.min(8.4,0.9*_fw)/Math.max(mxx-mnx,mxy-mny); // fit width on narrow screens; desktop stays 8.4
     dragonCol=new Float32Array(N*3);
     var wi=0;
     for(i=0;i<N;i++){var p=parts[i];
