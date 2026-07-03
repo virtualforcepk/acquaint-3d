@@ -17,11 +17,11 @@
   var tex=makeSprite();
   // Shape is fixed per page (no client router). arrow | orb | eth | diamond | dragon
   var shape=(document.body.getAttribute('data-shape')||'arrow');
-  var isMobile=W<760, N=shape==='dragon'?(isMobile?1600:3200):(isMobile?1200:2300);
+  var isMobile=W<760, N=shape==='dragon'?(isMobile?2000:4000):(isMobile?1200:2300);
   var cG=new THREE.Color(0x34d399), cC=new THREE.Color(0x2dd4ff);
   function shell(r0,r1){var u=Math.random(),v=Math.random();var th=u*6.283,ph=Math.acos(2*v-1),r=r0+Math.random()*(r1-r0);
     return [r*Math.sin(ph)*Math.cos(th),r*Math.cos(ph)*0.85,r*Math.sin(ph)*Math.sin(th)];}
-  var parts=null,geo=null,started=false,arrowCol=null,diamondCol=null,ethCol=null,orbCol=null,dragonCol=null;
+  var parts=null,geo=null,started=false,arrowCol=null,diamondCol=null,ethCol=null,orbCol=null,dragonCol=null,dgHubX=0,dgHubY=0;
   function makeColors(tyMin,tyMax){var col=new Float32Array(N*3);
     for(var i=0;i<N;i++){var t=(parts[i].ty-tyMin)/(tyMax-tyMin||1);var c2=cG.clone().lerp(cC,t).multiplyScalar(1.12);
       col[i*3]=Math.min(c2.r,1);col[i*3+1]=Math.min(c2.g,1);col[i*3+2]=Math.min(c2.b,1);}return col;}
@@ -95,7 +95,7 @@
     function put(x,y,seg,kind,zj){TG.push({x:x,y:y,z:(Math.random()-0.5)*(zj||0.25),g:seg,k:kind||'b'});}
     function st(ctrls,n,jit,seg,kind,taper,zj){for(var g=0;g<n;g++){var u=Math.random(),b=bz(ctrls,u),j=taper?jit*(1-0.6*u):jit;
       put(b[0]+(Math.random()*2-1)*j,b[1]+(Math.random()*2-1)*j,seg,kind,zj);}}
-    var wire=Math.floor(N*0.88), DF=wire/3394, BODY_END=0.985;
+    var wire=Math.floor(N*0.88), TN=Math.round(N*0.15), bodyN=wire-TN, DF=bodyN/3394, BODY_END=0.985;
     function bodyPt(){var t=tArc(Math.random())*BODY_END,sq=sp(t),n2=nm(t),w=wf(t),r=Math.random(),u;
       if(r<0.34)u=0.92+Math.random()*0.16;else if(r<0.70)u=-(0.95+Math.random()*0.10);else u=(Math.random()*2-1)*0.82;
       put(sq[0]+n2[0]*w*u+(Math.random()*2-1)*0.018,sq[1]+n2[1]*w*u+(Math.random()*2-1)*0.018,t,'b',0.5);}
@@ -145,24 +145,35 @@
     st([[HX-0.20*s,HY-0.46*s],[HX-0.90*s,HY-0.72*s],[HX-1.55*s,HY-0.55*s],[HX-1.95*s,HY-1.30*s]],Math.round(72*DF),0.010,1,'b',false,0.18);
     st([[HX+0.20*s,HY-0.46*s],[HX+0.90*s,HY-0.72*s],[HX+1.55*s,HY-0.55*s],[HX+1.95*s,HY-1.30*s]],Math.round(72*DF),0.010,1,'b',false,0.18);
     mst([[HX-0.06*s,HY-0.68*s],[HX-0.10*s,HY-0.88*s]],Math.round(8*DF),0.010,1,'b',true,0.15);
-    var t00=sp(0),d0=tg(0),ba=Math.atan2(-d0[1],-d0[0]),TF=[-30,-12,4,20,38],tt2;
-    for(tt2=0;tt2<5;tt2++){var a4=ba+TF[tt2]*Math.PI/180,L4=0.55+Math.random()*0.4;
-      st([[t00[0],t00[1]],[t00[0]+0.5*L4*Math.cos(a4)+0.05,t00[1]+0.5*L4*Math.sin(a4)+0.08],[t00[0]+L4*Math.cos(a4),t00[1]+L4*Math.sin(a4)]],Math.round(16*DF),0.02,0,'b',true,0.3);}
-    while(TG.length<wire)bodyPt();
-    while(TG.length>wire)TG.splice((Math.random()*TG.length)|0,1);
+    /* ---- endless tail: a fading log-spiral that recedes toward a vanishing point ---- */
+    var t00=sp(0),d0=tg(0),ba=Math.atan2(-d0[1],-d0[0]);
+    var hubx=t00[0]+Math.cos(ba)*0.5, huby=t00[1]+Math.sin(ba)*0.5, TAIL=[], qq;
+    for(qq=0;qq<TN;qq++){
+      var ss=Math.pow(Math.random(),0.72);      // 0 joins the body, 1 vanishes into infinity
+      var ang=ba+ss*4.6*6.2832;                 // ~4.6 coils
+      var rad=0.92*Math.exp(-2.9*ss);           // radius decays toward the vanishing point
+      TAIL.push({x:hubx+Math.cos(ang)*rad+(Math.random()*2-1)*0.02,
+                 y:huby+Math.sin(ang)*rad+(Math.random()*2-1)*0.02,
+                 z:-ss*1.7, g:0.02, k:'tail', fade:Math.max(0.06,1-0.95*ss)});
+    }
+    while(TG.length<bodyN)bodyPt();
+    while(TG.length>bodyN)TG.splice((Math.random()*TG.length)|0,1);
+    /* frame size is set by the BODY only, so the endless tail never shrinks the dragon */
     var mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;
-    for(i=0;i<wire;i++){var g3=TG[i];if(g3.x<mnx)mnx=g3.x;if(g3.x>mxx)mxx=g3.x;if(g3.y<mny)mny=g3.y;if(g3.y>mxy)mxy=g3.y;}
+    for(i=0;i<TG.length;i++){var g3=TG[i];if(g3.x<mnx)mnx=g3.x;if(g3.x>mxx)mxx=g3.x;if(g3.y<mny)mny=g3.y;if(g3.y>mxy)mxy=g3.y;}
+    for(i=0;i<TAIL.length;i++)TG.push(TAIL[i]);
     var ctx2=(mnx+mxx)/2,cty=(mny+mxy)/2,
-      _fw=2*Math.tan(55*Math.PI/360)*8*(W/H),           // visible world-width at the dragon plane
+      _fw=2*Math.tan(55*Math.PI/360)*8*(W/H),
       SC2=Math.min(8.4,0.9*_fw)/Math.max(mxx-mnx,mxy-mny); // fit width on narrow screens; desktop stays 8.4
+    dgHubX=(hubx-ctx2)*SC2;dgHubY=(huby-cty)*SC2;         // spiral hub in world space, for the endless spin
     dragonCol=new Float32Array(N*3);
     var wi=0;
     for(i=0;i<N;i++){var p=parts[i];
       if(p.free){p.gx=p.tx;p.gy=p.ty;p.gz=p.tz;p.gseg=Math.random();
         dragonCol[i*3]=arrowCol[i*3];dragonCol[i*3+1]=arrowCol[i*3+1];dragonCol[i*3+2]=arrowCol[i*3+2];}
-      else{var g4=TG[wi++];p.gx=(g4.x-ctx2)*SC2;p.gy=(g4.y-cty)*SC2;p.gz=g4.z*SC2;p.gseg=g4.g;
+      else{var g4=TG[wi++];p.gx=(g4.x-ctx2)*SC2;p.gy=(g4.y-cty)*SC2;p.gz=g4.z*SC2;p.gseg=g4.g;p.gtail=(g4.k==='tail');
         if(g4.k==='e'){dragonCol[i*3]=1;dragonCol[i*3+1]=0.96;dragonCol[i*3+2]=0.9;}
-        else{var c5=cG.clone().lerp(cC,Math.max(0,Math.min(1,g4.g))).multiplyScalar(1.12);
+        else{var f5=g4.fade==null?1:g4.fade,c5=cG.clone().lerp(cC,Math.max(0,Math.min(1,g4.g))).multiplyScalar(1.12*f5);
           dragonCol[i*3]=Math.min(c5.r,1);dragonCol[i*3+1]=Math.min(c5.g,1);dragonCol[i*3+2]=Math.min(c5.b,1);}}}
   }
   function applyShape(){if(!geo)return;var c=shape==='dragon'?dragonCol:(shape==='diamond'?diamondCol:(shape==='eth'?ethCol:(shape==='orb'?orbCol:arrowCol)));if(c){geo.attributes.color.array.set(c);geo.attributes.color.needsUpdate=true;}}
@@ -242,6 +253,7 @@
       var p=parts[k],bx,by,bz;
       if(p.free){bx=p.tx;by=p.ty;bz=p.tz;}
       else{var gx=shape==='dragon'?p.gx:(shape==='orb'?p.ox:(shape==='eth'?p.ex:(shape==='diamond'?p.dx:p.tx))),gy=shape==='dragon'?p.gy:(shape==='orb'?p.oy:(shape==='eth'?p.ey:(shape==='diamond'?p.dy:p.ty))),gz=shape==='dragon'?p.gz:(shape==='orb'?p.oz:(shape==='eth'?p.ez:(shape==='diamond'?p.dz:p.tz)));bx=p.sx+(gx-p.sx)*e;by=p.sy+(gy-p.sy)*e;bz=p.sz+(gz-p.sz)*e;}
+      if(p.gtail&&!reduce&&e>0.4){var _r=time*0.4,_dx=bx-dgHubX,_dy=by-dgHubY,_c=Math.cos(_r),_s=Math.sin(_r);bx=dgHubX+_dx*_c-_dy*_s;by=dgHubY+_dx*_s+_dy*_c;}
       var x1=bx*cY-bz*sY, z1=bx*sY+bz*cY, y1=by;
       var y2=y1*cX-z1*sX, z2=y1*sX+z1*cX;
       var X=x1,Y=y2,Z=z2;
