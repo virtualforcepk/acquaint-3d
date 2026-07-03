@@ -21,7 +21,7 @@
   var cG=new THREE.Color(0x34d399), cC=new THREE.Color(0x2dd4ff);
   function shell(r0,r1){var u=Math.random(),v=Math.random();var th=u*6.283,ph=Math.acos(2*v-1),r=r0+Math.random()*(r1-r0);
     return [r*Math.sin(ph)*Math.cos(th),r*Math.cos(ph)*0.85,r*Math.sin(ph)*Math.sin(th)];}
-  var parts=null,geo=null,started=false,arrowCol=null,diamondCol=null,ethCol=null,orbCol=null,dragonCol=null,dgHubX=0,dgHubY=0;
+  var parts=null,geo=null,started=false,arrowCol=null,diamondCol=null,ethCol=null,orbCol=null,dragonCol=null,dgHubX=0,dgHubY=0,dgBA=0,dgR0=1,dgZS=1;
   function makeColors(tyMin,tyMax){var col=new Float32Array(N*3);
     for(var i=0;i<N;i++){var t=(parts[i].ty-tyMin)/(tyMax-tyMin||1);var c2=cG.clone().lerp(cC,t).multiplyScalar(1.12);
       col[i*3]=Math.min(c2.r,1);col[i*3+1]=Math.min(c2.g,1);col[i*3+2]=Math.min(c2.b,1);}return col;}
@@ -149,12 +149,12 @@
     var t00=sp(0),d0=tg(0),ba=Math.atan2(-d0[1],-d0[0]);
     var hubx=t00[0]+Math.cos(ba)*0.5, huby=t00[1]+Math.sin(ba)*0.5, TAIL=[], qq;
     for(qq=0;qq<TN;qq++){
-      var ss=Math.pow(Math.random(),0.72);      // 0 joins the body, 1 vanishes into infinity
+      var ss=Math.random();                     // 0 joins the body, 1 vanishes into infinity
       var ang=ba+ss*4.6*6.2832;                 // ~4.6 coils
       var rad=0.92*Math.exp(-2.9*ss);           // radius decays toward the vanishing point
-      TAIL.push({x:hubx+Math.cos(ang)*rad+(Math.random()*2-1)*0.02,
-                 y:huby+Math.sin(ang)*rad+(Math.random()*2-1)*0.02,
-                 z:-ss*1.7, g:0.02, k:'tail', fade:Math.max(0.06,1-0.95*ss)});
+      var jx=(Math.random()*2-1)*0.02, jy=(Math.random()*2-1)*0.02;
+      TAIL.push({x:hubx+Math.cos(ang)*rad+jx, y:huby+Math.sin(ang)*rad+jy,
+                 z:-ss*1.7, g:0.02, k:'tail', fade:Math.max(0.05,Math.pow(1-ss,1.35)), ts:ss, jx:jx, jy:jy});
     }
     while(TG.length<bodyN)bodyPt();
     while(TG.length>bodyN)TG.splice((Math.random()*TG.length)|0,1);
@@ -165,16 +165,19 @@
     var ctx2=(mnx+mxx)/2,cty=(mny+mxy)/2,
       _fw=2*Math.tan(55*Math.PI/360)*8*(W/H),
       SC2=Math.min(8.4,0.9*_fw)/Math.max(mxx-mnx,mxy-mny); // fit width on narrow screens; desktop stays 8.4
-    dgHubX=(hubx-ctx2)*SC2;dgHubY=(huby-cty)*SC2;         // spiral hub in world space, for the endless spin
+    dgHubX=(hubx-ctx2)*SC2;dgHubY=(huby-cty)*SC2;         // spiral hub in world space
+    dgBA=ba;dgR0=0.92*SC2;dgZS=1.7*SC2;                   // conveyor constants for the endless flow
     dragonCol=new Float32Array(N*3);
     var wi=0;
     for(i=0;i<N;i++){var p=parts[i];
       if(p.free){p.gx=p.tx;p.gy=p.ty;p.gz=p.tz;p.gseg=Math.random();
         dragonCol[i*3]=arrowCol[i*3];dragonCol[i*3+1]=arrowCol[i*3+1];dragonCol[i*3+2]=arrowCol[i*3+2];}
       else{var g4=TG[wi++];p.gx=(g4.x-ctx2)*SC2;p.gy=(g4.y-cty)*SC2;p.gz=g4.z*SC2;p.gseg=g4.g;p.gtail=(g4.k==='tail');
+        if(p.gtail){p.gts=g4.ts;p.gj1=g4.jx*SC2;p.gj2=g4.jy*SC2;}
         if(g4.k==='e'){dragonCol[i*3]=1;dragonCol[i*3+1]=0.96;dragonCol[i*3+2]=0.9;}
-        else{var f5=g4.fade==null?1:g4.fade,c5=cG.clone().lerp(cC,Math.max(0,Math.min(1,g4.g))).multiplyScalar(1.12*f5);
-          dragonCol[i*3]=Math.min(c5.r,1);dragonCol[i*3+1]=Math.min(c5.g,1);dragonCol[i*3+2]=Math.min(c5.b,1);}}}
+        else{var f5=g4.fade==null?1:g4.fade,b5=cG.clone().lerp(cC,Math.max(0,Math.min(1,g4.g))).multiplyScalar(1.12);
+          if(p.gtail){p.gcr=Math.min(b5.r,1);p.gcg=Math.min(b5.g,1);p.gcb=Math.min(b5.b,1);}
+          dragonCol[i*3]=Math.min(b5.r*f5,1);dragonCol[i*3+1]=Math.min(b5.g*f5,1);dragonCol[i*3+2]=Math.min(b5.b*f5,1);}}}
   }
   function applyShape(){if(!geo)return;var c=shape==='dragon'?dragonCol:(shape==='diamond'?diamondCol:(shape==='eth'?ethCol:(shape==='orb'?orbCol:arrowCol)));if(c){geo.attributes.color.array.set(c);geo.attributes.color.needsUpdate=true;}}
 
@@ -249,11 +252,18 @@
     var cY=Math.cos(ry),sY=Math.sin(ry),cX=Math.cos(rx),sX=Math.sin(rx);
     var rad=down?3.0:1.7, str=down?2.3:0.85;
     var pos=geo.attributes.position.array;
+    var colA=(shape==='dragon'&&!reduce)?geo.attributes.color.array:null, colDirty=false;
     for(var k=0;k<N;k++){
       var p=parts[k],bx,by,bz;
       if(p.free){bx=p.tx;by=p.ty;bz=p.tz;}
       else{var gx=shape==='dragon'?p.gx:(shape==='orb'?p.ox:(shape==='eth'?p.ex:(shape==='diamond'?p.dx:p.tx))),gy=shape==='dragon'?p.gy:(shape==='orb'?p.oy:(shape==='eth'?p.ey:(shape==='diamond'?p.dy:p.ty))),gz=shape==='dragon'?p.gz:(shape==='orb'?p.oz:(shape==='eth'?p.ez:(shape==='diamond'?p.dz:p.tz)));bx=p.sx+(gx-p.sx)*e;by=p.sy+(gy-p.sy)*e;bz=p.sz+(gz-p.sz)*e;}
-      if(p.gtail&&!reduce&&e>0.4){var _r=time*0.4,_dx=bx-dgHubX,_dy=by-dgHubY,_c=Math.cos(_r),_s=Math.sin(_r);bx=dgHubX+_dx*_c-_dy*_s;by=dgHubY+_dx*_s+_dy*_c;}
+      if(p.gtail&&!reduce&&e>0.4){
+        /* endless conveyor: flow along the spiral, dim, and die at the vanishing point */
+        var s5=(p.gts+time*0.028)%1, a5=dgBA+s5*28.903, r5=dgR0*Math.exp(-2.9*s5);
+        bx=dgHubX+Math.cos(a5)*r5+p.gj1; by=dgHubY+Math.sin(a5)*r5+p.gj2; bz=-s5*dgZS;
+        var f6=(s5<0.07?s5/0.07:1)*Math.pow(1-s5,1.35)*Math.min(1,(e-0.4)/0.5);
+        colA[k*3]=p.gcr*f6; colA[k*3+1]=p.gcg*f6; colA[k*3+2]=p.gcb*f6; colDirty=true;
+      }
       var x1=bx*cY-bz*sY, z1=bx*sY+bz*cY, y1=by;
       var y2=y1*cX-z1*sX, z2=y1*sX+z1*cX;
       var X=x1,Y=y2,Z=z2;
@@ -264,6 +274,7 @@
       pos[k*3]=X;pos[k*3+1]=Y;pos[k*3+2]=Z;
     }
     geo.attributes.position.needsUpdate=true;
+    if(colDirty)geo.attributes.color.needsUpdate=true;
     var cmx=mx<-900?0:mx, cmy=my<-900?0:my; // no pointer yet -> keep the camera centered
     camera.position.x+=((cmx*0.04)-camera.position.x)*0.04;
     camera.position.y+=((cmy*0.04)-camera.position.y)*0.04;
