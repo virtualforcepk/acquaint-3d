@@ -1,6 +1,6 @@
 {
   "redirects": [
-    { "source": "/app", "destination": "/", "permanent": true },
-    { "source": "/app/", "destination": "/", "permanent": true }
+    { "source": "/app", "destination": "/lead-gen", "permanent": true },
+    { "source": "/app/", "destination": "/lead-gen", "permanent": true }
   ]
 }
