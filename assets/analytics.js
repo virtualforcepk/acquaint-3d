@@ -41,3 +41,18 @@
     }, true);
   });
 })();
+
+/* Vercel Web Analytics — first-party, cookieless traffic + landing-page counts.
+ * Served from this domain (/_vercel/insights/…), so ad-blockers/consent banners don't strip it
+ * the way they do gtag — you actually count the organic visitors GA4 misses.
+ * ACTIVATE: Vercel dashboard → project acquaint-3d → Analytics → Enable Web Analytics.
+ * Until then /_vercel/insights/script.js 404s harmlessly and this is inert. Skipped on localhost. */
+(function () {
+  var h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '') return;
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  var s = document.createElement('script');
+  s.defer = true;
+  s.src = '/_vercel/insights/script.js';
+  document.head.appendChild(s);
+})();
