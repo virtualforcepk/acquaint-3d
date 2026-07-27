@@ -1,6 +1,24 @@
 {
   "redirects": [
-    { "source": "/app", "destination": "/lead-gen", "permanent": true },
-    { "source": "/app/", "destination": "/lead-gen", "permanent": true }
+    {
+      "source": "/app",
+      "destination": "/lead-gen",
+      "permanent": true
+    },
+    {
+      "source": "/app/",
+      "destination": "/lead-gen",
+      "permanent": true
+    },
+    {
+      "source": "/industries/corporate-event-services",
+      "destination": "/industries/event-venues",
+      "permanent": true
+    },
+    {
+      "source": "/industries/corporate-event-services/",
+      "destination": "/industries/event-venues",
+      "permanent": true
+    }
   ]
 }
