@@ -2,16 +2,25 @@
    so headings keep their line breaks when the web font swaps in: no layout shift. */
 @font-face{font-family:'Clash Fallback';font-display:swap;src:local('Arial Bold'),local('Arial-BoldMT'),local('Helvetica Neue Bold'),local('Roboto Bold');font-weight:600 700;size-adjust:102%;ascent-override:87.3%;descent-override:24.5%;line-gap-override:8.8%}
 @font-face{font-family:'Clash Fallback';font-display:swap;src:local('Arial'),local('ArialMT'),local('Helvetica Neue'),local('Roboto');font-weight:300 500;size-adjust:107.1%;ascent-override:83.1%;descent-override:23.3%;line-gap-override:8.4%}
-/* Same for Satoshi body copy, one face per weight the site loads (300/400/500/700): their widths differ enough that sharing a face would rewrap paragraphs. */
+/* Same for Satoshi body copy, one face per weight the site loads (300/400/500/700): their widths differ enough that sharing a face would rewrap paragraphs.
+   Vertical overrides are Satoshi's own metrics (1010/240/100 per 1000) divided by size-adjust; size-adjust is the width ratio of the site's
+   Satoshi text against Arial as Chrome shapes it (kerning included). Capitals run ~5% narrower than lowercase, so the uppercase labels get
+   their own 'Satoshi Caps Fallback'.
+   Body-copy measures are in em, not ch: ch is the width of "0" in whichever font is showing, and Satoshi's "0" is 24% wider than Arial's,
+   so a ch max-width would widen the box when the font swaps in. The em values keep the widths the site had with Arial (1ch = 0.556em). */
 @font-face{font-family:'Satoshi Fallback';font-display:swap;src:local('Arial'),local('ArialMT'),local('Helvetica Neue'),local('Roboto');font-weight:300;size-adjust:96.5%;ascent-override:104.6%;descent-override:24.9%;line-gap-override:10.4%}
-@font-face{font-family:'Satoshi Fallback';font-display:swap;src:local('Arial'),local('ArialMT'),local('Helvetica Neue'),local('Roboto');font-weight:400;size-adjust:99.1%;ascent-override:101.9%;descent-override:24.2%;line-gap-override:10.1%}
+@font-face{font-family:'Satoshi Fallback';font-display:swap;src:local('Arial'),local('ArialMT'),local('Helvetica Neue'),local('Roboto');font-weight:400;size-adjust:98.8%;ascent-override:102.2%;descent-override:24.3%;line-gap-override:10.1%}
 @font-face{font-family:'Satoshi Fallback';font-display:swap;src:local('Arial'),local('ArialMT'),local('Helvetica Neue'),local('Roboto');font-weight:500;size-adjust:101.9%;ascent-override:99.1%;descent-override:23.5%;line-gap-override:9.8%}
-@font-face{font-family:'Satoshi Fallback';font-display:swap;src:local('Arial Bold'),local('Arial-BoldMT'),local('Helvetica Neue Bold'),local('Roboto Bold');font-weight:600 700;size-adjust:97.9%;ascent-override:103.2%;descent-override:24.5%;line-gap-override:10.2%}
+@font-face{font-family:'Satoshi Fallback';font-display:swap;src:local('Arial Bold'),local('Arial-BoldMT'),local('Helvetica Neue Bold'),local('Roboto Bold');font-weight:600 700;size-adjust:96.2%;ascent-override:105%;descent-override:24.9%;line-gap-override:10.4%}
+@font-face{font-family:'Satoshi Caps Fallback';font-display:swap;src:local('Arial'),local('ArialMT'),local('Helvetica Neue'),local('Roboto');font-weight:300 400;size-adjust:94.3%;ascent-override:107.1%;descent-override:25.5%;line-gap-override:10.6%}
+@font-face{font-family:'Satoshi Caps Fallback';font-display:swap;src:local('Arial'),local('ArialMT'),local('Helvetica Neue'),local('Roboto');font-weight:500;size-adjust:95.7%;ascent-override:105.5%;descent-override:25.1%;line-gap-override:10.4%}
+@font-face{font-family:'Satoshi Caps Fallback';font-display:swap;src:local('Arial Bold'),local('Arial-BoldMT'),local('Helvetica Neue Bold'),local('Roboto Bold');font-weight:600 700;size-adjust:95.8%;ascent-override:105.4%;descent-override:25.1%;line-gap-override:10.4%}
 
 :root{--bg:#06121a;--green:#34d399;--cyan:#2dd4ff;--ink:#eef6f5;--muted:#8aa0a8;--dim:#b8c6cc;--line:#1c3a47;--line2:#274a59;}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Satoshi','Satoshi Fallback',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
+.eyebrow,.metrics span,.cue,.case-name,.hint,.cmp tbody th,.cmp td::before{font-family:'Satoshi','Satoshi Caps Fallback',sans-serif}
 h1,h2,h3{font-family:'Clash Display','Clash Fallback',sans-serif;font-weight:600;letter-spacing:-0.03em;line-height:0.98}
 .grad{background:linear-gradient(120deg,var(--green),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
 a{color:inherit;text-decoration:none}
@@ -60,7 +69,7 @@ main{position:relative;z-index:2}
 .eyebrow.c{display:block;text-align:center}
 h1{font-size:clamp(42px,7.4vw,96px)}
 h2{font-size:clamp(32px,4.4vw,54px)}
-.lead{color:var(--dim);font-size:clamp(16px,1.55vw,19px);line-height:1.62;max-width:56ch;margin-top:20px}
+.lead{color:var(--dim);font-size:clamp(16px,1.55vw,19px);line-height:1.62;max-width:31.15em;margin-top:20px}
 .lead.center{margin-left:auto;margin-right:auto}
 
 .metrics{display:flex;gap:0;flex-wrap:wrap;margin-top:36px;border-top:1px solid var(--line);padding-top:26px}
@@ -77,7 +86,7 @@ h2{font-size:clamp(32px,4.4vw,54px)}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;text-align:left}
 .card{border:1px solid var(--line);border-radius:16px;padding:28px;background:rgba(9,24,34,0.66);backdrop-filter:blur(7px);display:flex;flex-direction:column}
 .card.prem{border-color:rgba(52,214,240,.32);background:rgba(45,212,255,.05)}
-.kn{font-family:'Satoshi','Satoshi Fallback',sans-serif;font-size:12px;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.kn{font-family:'Satoshi','Satoshi Caps Fallback',sans-serif;font-size:12px;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
 .card h3{font-size:23px;margin-bottom:10px}
 .card p{color:var(--muted);font-size:14.5px;line-height:1.55}
 .card p b{color:var(--ink);font-weight:600}
@@ -93,7 +102,7 @@ h2{font-size:clamp(32px,4.4vw,54px)}
 .price{font-family:'Clash Display','Clash Fallback',sans-serif;font-weight:600;font-size:52px;line-height:1;display:flex;align-items:baseline;gap:6px}
 .per{font-size:13px;color:var(--muted);font-weight:400}
 .setup{font-size:12.5px;color:var(--muted)}
-.note{font-size:12.5px;color:var(--muted);line-height:1.5;max-width:30ch;border-left:2px solid var(--line2);padding-left:12px;margin-top:4px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5;max-width:16.7em;border-left:2px solid var(--line2);padding-left:12px;margin-top:4px}
 .flag{display:inline-block;background:linear-gradient(120deg,var(--green),var(--cyan));color:#03131c;font-size:11px;font-weight:600;padding:4px 13px;border-radius:999px;margin-bottom:14px}
 
 .steps{display:flex;align-items:flex-start;gap:0;margin-top:44px}
@@ -142,14 +151,14 @@ h2{font-size:clamp(32px,4.4vw,54px)}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:'+';color:var(--cyan);font-weight:400;font-size:22px;flex-shrink:0;transition:transform .25s}
 .faq[open] summary::after{transform:rotate(45deg)}
-.faq p{color:var(--dim);font-size:15.5px;line-height:1.6;max-width:62ch;padding:0 28px 18px 0}
+.faq p{color:var(--dim);font-size:15.5px;line-height:1.6;max-width:34.5em;padding:0 28px 18px 0}
 .faq p b{color:var(--ink)}
 
 .quote cite{display:block;font-style:normal;font-family:'Satoshi','Satoshi Fallback',sans-serif;font-weight:400;font-size:14px;color:var(--muted);margin-top:16px}
 .quote cite b{color:var(--cyan)}
 
 .legal h2{font-size:clamp(20px,2.2vw,26px);margin:40px 0 12px}
-.legal p{color:var(--dim);line-height:1.7;margin-bottom:14px;font-size:15.5px;max-width:68ch}
+.legal p{color:var(--dim);line-height:1.7;margin-bottom:14px;font-size:15.5px;max-width:37.8em}
 .legal p a{color:var(--cyan);font-weight:500}
 .legal p strong{color:var(--ink)}
 
