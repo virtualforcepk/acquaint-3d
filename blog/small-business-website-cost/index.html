@@ -24,17 +24,14 @@
 <base href="../../">
 <link rel="icon" href="arrow-mark-t.png">
 <link rel="stylesheet" href="assets/styles.css">
-<script src="assets/analytics.js"></script>
+<script src="site.config.js" defer></script>
+<script src="assets/analytics.js" defer></script>
+<script src="assets/pricing.js" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Article","headline":"What a small business website should cost in 2026 (GTA)","author":{"@type":"Organization","name":"Acquaint Media"},"publisher":{"@type":"Organization","name":"Acquaint Media","url":"https://acquaintmedia.ai/"},"datePublished":"2026-07-08","mainEntityOfPage":"https://acquaintmedia.ai/blog/small-business-website-cost","image":"https://acquaintmedia.ai/og.png","about":"Small business website pricing in Canada"}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"How much does a small business website cost in Canada in 2026?","acceptedAnswer":{"@type":"Answer","text":"It ranges widely. A DIY builder runs $0-30/month but costs you time and rarely ranks. A freelancer template is typically $500-3,000 one-time. A custom-built, conversion-focused site from an agency is usually $3,000-15,000+ one-time, or a managed model from around $97/month that bundles hosting, updates, and SEO. The right number depends on whether you need a brochure or a system that actually brings in customers."}},
-{"@type":"Question","name":"Why are website quotes so different?","acceptedAnswer":{"@type":"Answer","text":"Because 'website' means very different things. A template swapped with your logo is cheap and fast. A custom site built around how your customers actually decide — fast load, clear offer, one-step booking, real SEO — takes more work and costs more, but it's the one that converts. You're not paying for pages; you're paying for whether it brings in business."}},
-{"@type":"Question","name":"Is a cheap website worth it?","acceptedAnswer":{"@type":"Answer","text":"Sometimes — if you genuinely just need a placeholder. But a cheap template that loads slow, looks generic, and doesn't rank often costs more in lost customers than it saves upfront. The real question isn't 'what's the cheapest site' but 'what's the cheapest site that actually wins business.'"}},
-{"@type":"Question","name":"What should be included in a fair website price?","acceptedAnswer":{"@type":"Answer","text":"At minimum: a custom design built around your brand, mobile-fast performance, on-page SEO, and a clear path for a visitor to contact or book you. A fair managed price also includes hosting, ongoing updates, and SEO/backlink work — not a build-and-abandon."}}
-]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does a small business website cost in Canada in 2026?","acceptedAnswer":{"@type":"Answer","text":"It ranges widely. A DIY builder runs $0–30/month but costs you time and rarely ranks. A freelancer template is typically $500–3,000 one-time. A custom, conversion-focused agency site is usually $3,000–15,000+ one-time, or a managed model from around $100/month that bundles hosting, updates, and SEO. The right number depends on whether you need a brochure or a system that actually brings in customers."}},{"@type":"Question","name":"Why are website quotes so different?","acceptedAnswer":{"@type":"Answer","text":"Because \"website\" means very different things. A template swapped with your logo is cheap and fast. A custom site built around how your customers actually decide — fast load, clear offer, one-step booking, real SEO — takes more work and costs more, but it's the one that converts. You're not paying for pages; you're paying for whether it brings in business."}},{"@type":"Question","name":"Is a cheap website worth it?","acceptedAnswer":{"@type":"Answer","text":"Sometimes — if you genuinely just need a placeholder. But a cheap template that loads slow, looks generic, and doesn't rank often costs more in lost customers than it saves upfront. The real question isn't \"what's the cheapest site\" but \"what's the cheapest site that actually wins business.\""}},{"@type":"Question","name":"What should be included in a fair website price?","acceptedAnswer":{"@type":"Answer","text":"At minimum: a custom design built around your brand, mobile-fast performance, on-page SEO, and a clear path for a visitor to contact or book you. A fair managed price also includes hosting, ongoing updates, and SEO/backlink work — not a build-and-abandon."}}]}
 </script>
 </head>
 <body data-shape="diamond">
@@ -45,9 +42,10 @@
   <a class="brand" href="./">Acquaint<img src="arrow-mark-t.webp" alt="Acquaint Media"></a>
   <div class="nav-links">
     <a href="website">Website</a>
-    <a href="lead-gen">Lead Gen</a>
-    <a href="industries">Industries</a>
+    <a href="seo">SEO</a>
     <a href="about">About</a>
+    <a href="blog" class="active">Blog</a>
+    <div class="geo" role="group" aria-label="Show prices in"><button type="button" data-region="CA" aria-pressed="true">CAD</button><span aria-hidden="true">|</span><button type="button" data-region="PK" aria-pressed="false">PKR</button></div>
     <a class="nav-cta" href="https://calendly.com/kamran1-sou9/new-meeting" target="_blank" rel="noreferrer">Book a call</a>
   </div>
 </nav>
@@ -70,7 +68,7 @@
         <div class="card"><div class="kn">01 · DIY builder</div><h3>$0–30/mo</h3><p>Wix, Squarespace, Shopify. Cheapest in dollars, expensive in your time — and templates rarely rank on Google without real SEO work. Fine for a placeholder.</p></div>
         <div class="card"><div class="kn">02 · Freelancer template</div><h3>$500–3,000</h3><p>A theme customised with your branding. Faster than DIY, but you're often left to maintain it yourself, and quality swings wildly.</p></div>
         <div class="card prem"><div class="kn">03 · Custom agency build</div><h3>$3,000–15,000+</h3><p>Built from scratch around how your customers decide — fast, conversion-focused, real SEO baked in. The one that actually brings in business.</p></div>
-        <div class="card"><div class="kn">04 · Managed / subscription</div><h3>from ~$97/mo</h3><p>A custom site plus hosting, ongoing updates, and SEO bundled — so it keeps working instead of going stale the day it launches.</p></div>
+        <div class="card"><div class="kn">04 · Managed / subscription</div><h3>from ~$100/mo</h3><p>A custom site plus hosting, ongoing updates, and SEO bundled — so it keeps working instead of going stale the day it launches.</p></div>
       </div>
     </div>
   </section>
@@ -104,7 +102,7 @@
       <div class="eyebrow">Questions, answered</div>
       <h2>The things people <span class="grad">ask first.</span></h2>
       <div class="faqs">
-        <details class="faq"><summary>How much does a small business website cost in Canada in 2026?</summary><p>It ranges widely. A DIY builder runs $0–30/month but costs you time and rarely ranks. A freelancer template is typically $500–3,000 one-time. A custom, conversion-focused agency site is usually $3,000–15,000+ one-time, or a managed model from around $97/month that bundles hosting, updates, and SEO. The right number depends on whether you need a brochure or a system that actually brings in customers.</p></details>
+        <details class="faq"><summary>How much does a small business website cost in Canada in 2026?</summary><p>It ranges widely. A DIY builder runs $0–30/month but costs you time and rarely ranks. A freelancer template is typically $500–3,000 one-time. A custom, conversion-focused agency site is usually $3,000–15,000+ one-time, or a managed model from around $100/month that bundles hosting, updates, and SEO. The right number depends on whether you need a brochure or a system that actually brings in customers.</p></details>
         <details class="faq"><summary>Why are website quotes so different?</summary><p>Because "website" means very different things. A template swapped with your logo is cheap and fast. A custom site built around how your customers actually decide — fast load, clear offer, one-step booking, real SEO — takes more work and costs more, but it's the one that converts. You're not paying for pages; you're paying for whether it brings in business.</p></details>
         <details class="faq"><summary>Is a cheap website worth it?</summary><p>Sometimes — if you genuinely just need a placeholder. But a cheap template that loads slow, looks generic, and doesn't rank often costs more in lost customers than it saves upfront. The real question isn't "what's the cheapest site" but "what's the cheapest site that actually wins business."</p></details>
         <details class="faq"><summary>What should be included in a fair website price?</summary><p>At minimum: a custom design built around your brand, mobile-fast performance, on-page SEO, and a clear path for a visitor to contact or book you. A fair managed price also includes hosting, ongoing updates, and SEO/backlink work — not a build-and-abandon.</p></details>
@@ -115,7 +113,7 @@
   <section class="sec full cta">
     <div class="wrap center">
       <h2>Want a straight answer for <span class="grad">your business?</span></h2>
-      <p class="lead center">Thirty minutes, no pitch. We'll tell you what your site actually needs and what it should cost — even if that's not us. See <a href="website">how our websites work</a> or the <a href="industries">industries we build for</a>.</p>
+      <p class="lead center">Thirty minutes, no pitch. We'll tell you what your site actually needs and what it should cost — even if that's not us. See <a href="website">how our websites work</a> or <a href="seo">how SEO works</a>.</p>
       <div class="ctas center"><a class="btn" href="https://calendly.com/kamran1-sou9/new-meeting" target="_blank" rel="noreferrer">Book a call</a></div>
     </div>
   </section>
@@ -124,8 +122,8 @@
 <footer class="footer">
   <div class="wrap foot">
     <a class="brand" href="./">Acquaint<img src="arrow-mark-t.webp" alt="Acquaint Media"></a>
-    <div class="foot-links"><a href="website">Website</a><a href="lead-gen">Lead Gen</a><a href="industries">Industries</a><a href="about">About</a><a href="blog">Blog</a><a href="privacy">Privacy</a><a href="mailto:info@acquaintmedia.ai">info@acquaintmedia.ai</a></div>
-    <span class="foot-copy">© 2026 Acquaint Media · Mississauga, ON</span>
+    <div class="foot-links"><a href="website">Website</a><a href="seo">SEO</a><a href="about">About</a><a href="blog">Blog</a><a href="privacy">Privacy</a><a href="mailto:info@acquaintmedia.ai">info@acquaintmedia.ai</a></div>
+    <span class="foot-copy">© 2026 Acquaint Media · Brampton, ON</span>
   </div>
 </footer>
 

@@ -301,7 +301,9 @@
 
   /* reveals: tag candidates, stagger within their parent, show on first view */
   var sel='main h1,main h2,main .eyebrow,main .lead,main .ctas,main .metrics>div,main .cards>*,main .grid2>*,main .cases>*,main .principles>*,main .steps .step,main .panel,main .faqs .faq,main .quote,main .founder,main .chips';
-  var els=[].slice.call(document.querySelectorAll(sel));
+  /* the hero stays visible from first paint (it is the page's largest contentful paint) */
+  var hero=document.querySelector('main > .sec.full:not(.cta)');
+  var els=[].slice.call(document.querySelectorAll(sel)).filter(function(el){return !(hero&&hero.contains(el));});
   if('IntersectionObserver' in window&&els.length){
     els.forEach(function(el){
       var p=el.parentNode,k=p.__rvn=(p.__rvn||0);p.__rvn++;
@@ -314,7 +316,7 @@
     els.forEach(function(el){io.observe(el);});
   }
 
-  /* metric count-up: "88,000+" counts, "24/7" and "$97" are left alone */
+  /* metric count-up: "88,000+" counts, "24/7" and prices are left alone */
   var nums=[].slice.call(document.querySelectorAll('.metrics b'));
   function countUp(el){
     var m=el.textContent.trim().match(/^([0-9][0-9,]*)([^0-9,]*)$/);
