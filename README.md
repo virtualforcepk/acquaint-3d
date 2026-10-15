@@ -17,7 +17,7 @@ Marketing site for **Acquaint Media** (Brampton, ON — premium websites and mon
 Removed routes `/lead-gen`, `/app`, `/industries/*`, and `/ads-management-services-mississauga` are 301-redirected in `vercel.json`.
 
 ## Prices and the tier counter
-`site.config.js` is the **single source of truth** for every price on the site: two independent lists, the founder-pricing counter (`TIER`, `SPOTS_LEFT`), and the optional WhatsApp number. The main site (`/`, `/website`, `/seo`) shows the **CA** list only. The separate `/pk` page shows the **PK** list only, selected by `<body data-prices="PK">`. There is no toggle and no redirect. `assets/pricing.js` fills every `[data-price]` element from the page's list.
+`site.config.js` is the **single source of truth** for every price on the site: two independent lists, the founder-pricing counter (`TIER`, `SPOTS_LEFT`). The main site (`/`, `/website`, `/seo`) shows the **CA** list only. The separate `/pk` page shows the **PK** list only, selected by `<body data-prices="PK">`. There is no toggle and no redirect. `assets/pricing.js` fills every `[data-price]` element from the page's list.
 
 The HTML also carries the CA values as a no-JS fallback and inside JSON-LD. After editing `site.config.js`, run:
 

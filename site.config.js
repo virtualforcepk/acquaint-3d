@@ -26,9 +26,5 @@ window.ACQ_CONFIG = {
      "Tier {TIER} pricing - {SPOTS_LEFT} of {SPOTS_PER_TIER} spots left". */
   TIER: 1,
   SPOTS_LEFT: 5,
-  SPOTS_PER_TIER: 5,
-
-  /* WhatsApp CTA, shown on the /pk page only, and only when a number is set.
-     Digits only, country code first, e.g. "923001234567". Leave "" to hide it. */
-  WHATSAPP_NUMBER: ""
+  SPOTS_PER_TIER: 5
 };
