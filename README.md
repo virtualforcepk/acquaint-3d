@@ -1,15 +1,31 @@
-# Acquaint Media — 3D site
+# Acquaint Media — site
 
-Marketing site for **Acquaint Media** (Mississauga, ON — lead-gen systems, conversion websites, and an AI receptionist app). A fast, multi-page static site with a WebGL particle-shape hero on every page and per-page SEO.
+Marketing site for **Acquaint Media** (Brampton, ON — premium websites and monthly SEO). A fast, multi-page static site with a WebGL particle-shape hero on every page and per-page SEO.
 
 ## Pages
-| Route | 3D shape |
-|-------|----------|
-| `/` Home | arrow mark |
-| `/website` | orb |
-| `/app` | Ethereum diamond |
-| `/lead-gen` | brilliant-cut diamond |
-| `/about` | arrow mark + founder |
+| Route | What it is | 3D shape |
+|-------|------------|----------|
+| `/` | Home: two products, founder pricing, proof, how it works, FAQ | arrow mark |
+| `/website` | Product 1 — Premium Website (managed vs one-time build) | dragon |
+| `/seo` | Product 2 — SEO Optimization | orb |
+| `/pk` | Self-contained offer page priced in PKR (products, plans table, SEO detail, FAQ) | arrow mark |
+| `/about` | Founder and track record | arrow mark |
+| `/blog` | Posts | orb |
+| `/work/*` | Case studies | various |
+| `/privacy` | Privacy policy | none |
+
+Removed routes `/lead-gen`, `/app`, `/industries/*`, and `/ads-management-services-mississauga` are 301-redirected in `vercel.json`.
+
+## Prices and the tier counter
+`site.config.js` is the **single source of truth** for every price on the site: two independent lists, the founder-pricing counter (`TIER`, `SPOTS_LEFT`), and the optional WhatsApp number. The main site (`/`, `/website`, `/seo`) shows the **CA** list only. The separate `/pk` page shows the **PK** list only, selected by `<body data-prices="PK">`. There is no toggle and no redirect. `assets/pricing.js` fills every `[data-price]` element from the page's list.
+
+The HTML also carries the CA values as a no-JS fallback and inside JSON-LD. After editing `site.config.js`, run:
+
+```bash
+python scripts/sync_prices.py
+```
+
+It re-stamps the fallbacks, the JSON-LD offer prices, and regenerates the home FAQPage schema from the visible FAQ text. Idempotent.
 
 ## Stack
 Static HTML + CSS + vanilla JS. The particle engine is `assets/app.js` (Three.js r128, loaded from CDN). Shared `assets/styles.css`. No build step.
@@ -23,10 +39,10 @@ python -m http.server 5192
 ```
 
 ## SEO
-Every page ships its own `<title>`, meta description, canonical, Open Graph + Twitter, and JSON-LD (Organization, LocalBusiness, Service); single `<h1>`; `lang="en-CA"`. `robots.txt` + `sitemap.xml` are at the root. Audited at Lighthouse SEO 100 / on-page 100.
+Every page ships its own `<title>`, meta description, canonical, Open Graph + Twitter, and JSON-LD (Organization, ProfessionalService, Service with CAD offers; FAQPage on the home page only); single `<h1>`; `lang="en-CA"`. `robots.txt` + `sitemap.xml` are at the root.
 
 ## Analytics
-`assets/analytics.js` is wired but inert — set a real GA4 Measurement ID in its `ID` constant to activate (no requests or cookies until then).
+`assets/analytics.js` loads GA4 and Vercel Web Analytics (the latter stays inert until enabled in the Vercel dashboard).
 
-## Deploy notes
-Paths are **root-relative** (`/assets/...`, `/website`, `/founder.jpg`), so the site must be served from a domain **root** — a custom domain (e.g. `acquaintmedia.ai`) or a `*.github.io` root site. A GitHub Pages *project* subpath (`user.github.io/acquaint-3d/`) would break those paths without a base-path adjustment.
+## Deploy
+Hosted on Vercel; every push to `main` is production. Preview deployments build from branches. `docs/` and `scripts/` are excluded from deploys via `.vercelignore`.

@@ -1,24 +1,13 @@
 {
   "redirects": [
-    {
-      "source": "/app",
-      "destination": "/lead-gen",
-      "permanent": true
-    },
-    {
-      "source": "/app/",
-      "destination": "/lead-gen",
-      "permanent": true
-    },
-    {
-      "source": "/industries/corporate-event-services",
-      "destination": "/industries/event-venues",
-      "permanent": true
-    },
-    {
-      "source": "/industries/corporate-event-services/",
-      "destination": "/industries/event-venues",
-      "permanent": true
-    }
+    { "source": "/lead-gen", "destination": "/website", "statusCode": 301 },
+    { "source": "/lead-gen/", "destination": "/website", "statusCode": 301 },
+    { "source": "/app", "destination": "/website", "statusCode": 301 },
+    { "source": "/app/", "destination": "/website", "statusCode": 301 },
+    { "source": "/industries", "destination": "/", "statusCode": 301 },
+    { "source": "/industries/", "destination": "/", "statusCode": 301 },
+    { "source": "/industries/:path*", "destination": "/", "statusCode": 301 },
+    { "source": "/ads-management-services-mississauga", "destination": "/seo", "statusCode": 301 },
+    { "source": "/ads-management-services-mississauga/", "destination": "/seo", "statusCode": 301 }
   ]
 }
