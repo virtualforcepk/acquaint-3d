@@ -1,11 +1,20 @@
 /* Acquaint 3D particle engine — one shape per page (read from <body data-shape>). */
-(function(){
+function acqBoot3D(){
   if(!window.THREE) return;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cvs=document.getElementById('gl'), pctEl=document.getElementById('pct');
   if(!cvs) return;
   var W=innerWidth,H=innerHeight;
-  var renderer=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:true});
+  /* Hardware-accelerated WebGL only. Without a GPU (software rendering) the animation would
+     run on the CPU and peg it, so the page stays static and the readout just tracks scroll. */
+  var renderer=null,probe=null;
+  try{probe=document.createElement('canvas').getContext('webgl',{failIfMajorPerformanceCaveat:true});}catch(e0){}
+  if(probe){var lose=probe.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();
+    try{renderer=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:true,failIfMajorPerformanceCaveat:true});}catch(e1){renderer=null;}}
+  if(!renderer){
+    var st=function(){var m=document.body.scrollHeight-innerHeight;if(pctEl)pctEl.textContent=Math.round((m>0?Math.min(Math.max(scrollY/m,0),1):0)*100)+'%';};
+    addEventListener('scroll',st,{passive:true});st();return;
+  }
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(W,H);
   var scene=new THREE.Scene();
   var camera=new THREE.PerspectiveCamera(55,W/H,0.1,100);camera.position.set(0,0,8);
@@ -289,6 +298,14 @@
   img.onload=function(){buildFromImage(img);};
   img.onerror=function(){buildFallback();};
   img.src='arrow-mark-t.png';
+}
+/* Start the 3D scene once the page's first contentful paint has been presented, so the hero copy
+   is never held behind WebGL / GPU start-up. Falls back to a short timer if paint timing is unavailable. */
+(function(){
+  var done=false;
+  function boot(){if(done)return;done=true;var go=function(){acqBoot3D();};if(window.requestIdleCallback)requestIdleCallback(go,{timeout:600});else setTimeout(go,0);}
+  try{new PerformanceObserver(function(l){if(l.getEntriesByName('first-contentful-paint').length)boot();}).observe({type:'paint',buffered:true});}catch(e){}
+  setTimeout(boot,2500);
 })();
 
 /* V2 polish — nav scroll state, staggered reveals, metric count-up, cursor glow */
