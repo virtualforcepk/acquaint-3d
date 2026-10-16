@@ -436,7 +436,7 @@ html.lenis,html.lenis body{height:auto}
   padding:30px 34px;border-radius:20px;border:1px solid var(--line2);background:#0b1a24;box-shadow:0 -14px 40px rgba(0,0,0,.5);margin-bottom:24vh;
   transition:background .45s ease,border-color .45s ease}
 .stack-card:last-child{margin-bottom:0}
-.stack-card .num{grid-row:span 2;font-family:'Clash Display','Clash Fallback',sans-serif;font-weight:600;font-size:clamp(34px,4vw,54px);line-height:1;color:rgba(255,255,255,.16);transition:color .45s}
+.stack-card .num{grid-row:span 2;font-family:'Clash Display','Clash Fallback',sans-serif;font-weight:600;font-size:clamp(34px,4vw,54px);line-height:1;color:rgba(255,255,255,.46);transition:color .45s}
 .stack-card .step-n{transition:color .45s}
 .stack-card p{margin:0;color:var(--dim);font-size:clamp(17px,1.7vw,22px);line-height:1.42;transition:color .45s}
 .stack-card.is-active{background:linear-gradient(120deg,#2f54c9 0%,#4169e1 60%,#5b82ff 100%);border-color:transparent}
