@@ -337,32 +337,12 @@ main h2,main .lead,main .eyebrow,main .step p,main .step-n,main .faq summary,mai
 main .step p,main .fine{color:var(--dim)}
 
 /* ============================================================
-   SILVER FOREGROUND (owner, 2026-10-15)
-   Copy accents, links and CTAs are silver so they never blend into the teal stars.
-   The particle scene stays teal; everything you read or click is white or silver.
-   To change the accent colour, edit the three --accent values below.
+   THEME (owner, 2026-10-15): silver stars, gold highlighted copy, blue accents.
+   --star-a / --star-b are read by assets/app.js as the particle colours.
+   --copy* colour the highlighted headline words. Accents keep the original blue.
    ============================================================ */
-:root{--accent:#c9d2d8;--accent-hi:#ffffff;--accent-lo:#93a1ab}
-.grad{background-image:linear-gradient(120deg,var(--accent-hi) 0%,var(--accent) 50%,var(--accent-lo) 100%)}
-.eyebrow,.kn,.explore,.step-n,.flink,.hint b,.readout b,.quote cite b,.legal p a,.feat li::before,.faq summary::after{color:var(--accent)}
-.eyebrow::before{background:linear-gradient(90deg,var(--accent-hi),var(--accent-lo))}
-a.card:hover .explore{color:var(--accent-hi)}
-.faq summary:hover,.foot-links a:hover{color:var(--accent-hi)}
-@media(min-width:761px){.nav-links a:not(.nav-cta)::after{background:linear-gradient(90deg,var(--accent-hi),var(--accent-lo))}}
-.btn{background:linear-gradient(120deg,var(--accent-hi) 0%,var(--accent) 55%,var(--accent-lo) 100%);background-size:160% auto;color:#0b141b}
-.btn:hover{box-shadow:0 10px 34px rgba(205,214,220,.30),0 2px 10px rgba(147,161,171,.28)}
-.nav-cta{background:var(--accent);color:#0b141b!important}
-.nav-cta:hover{box-shadow:0 8px 26px rgba(205,214,220,.32)}
-.nav-burger:hover span{background:var(--accent)}
-.ghost:hover{border-color:rgba(205,214,220,.55);background:rgba(205,214,220,.07)}
-.card.prem{border-color:rgba(205,214,220,.30);background:rgba(205,214,220,.04)}
-a.card:hover{border-color:rgba(205,214,220,.45);box-shadow:0 22px 48px rgba(0,0,0,.4),0 0 0 1px rgba(205,214,220,.12)}
-.sec.full:not(.cta) .eyebrow{border-color:rgba(205,214,220,.35)}
-.tier{border-color:rgba(205,214,220,.38);background:rgba(205,214,220,.06)}
-.tier::before{background:var(--accent);box-shadow:0 0 0 4px rgba(205,214,220,.18)}
-.cmp thead th{background:rgba(205,214,220,.05)}
-@media(max-width:720px){.cmp td::before{color:var(--accent)}}
-.flag,.avatar{background:linear-gradient(140deg,var(--accent-hi),var(--accent-lo))}
-.chip:hover{border-color:rgba(205,214,220,.5)}
-::selection{background:rgba(205,214,220,.32)}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline-color:var(--accent)}
+:root{--star-a:#7d8993;--star-b:#c4cdd5;--copy-hi:#f9df92;--copy:#ecbd4f;--copy-lo:#dba43c}
+.grad{background-image:linear-gradient(120deg,var(--copy-hi) 0%,var(--copy) 50%,var(--copy-lo) 100%)}
+.atmos{background:radial-gradient(58% 48% at 50% 52%,rgba(205,214,222,.045),transparent 70%),
+                  radial-gradient(70% 60% at 50% 114%,rgba(180,192,202,.07),transparent 70%)}
+#cglow{background:radial-gradient(circle,rgba(220,228,235,.06),rgba(180,192,202,.025) 45%,transparent 70%)}
