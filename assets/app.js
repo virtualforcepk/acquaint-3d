@@ -27,7 +27,10 @@ function acqBoot3D(){
   // Shape is fixed per page (no client router). arrow | orb | eth | diamond | dragon
   var shape=(document.body.getAttribute('data-shape')||'arrow');
   var isMobile=W<760, N=shape==='dragon'?(isMobile?2000:4000):(isMobile?1200:2300);
-  var cG=new THREE.Color(0x34d399), cC=new THREE.Color(0x2dd4ff);
+  /* particle colours come from the stylesheet (--star-a low, --star-b high); teal is the fallback */
+  var rootCS=getComputedStyle(document.documentElement);
+  function starColor(name,fb){var v=(rootCS.getPropertyValue(name)||'').trim();try{return new THREE.Color(v||fb);}catch(e){return new THREE.Color(fb);}}
+  var cG=starColor('--star-a',0x34d399), cC=starColor('--star-b',0x2dd4ff);
   function shell(r0,r1){var u=Math.random(),v=Math.random();var th=u*6.283,ph=Math.acos(2*v-1),r=r0+Math.random()*(r1-r0);
     return [r*Math.sin(ph)*Math.cos(th),r*Math.cos(ph)*0.85,r*Math.sin(ph)*Math.sin(th)];}
   var parts=null,geo=null,started=false,arrowCol=null,diamondCol=null,ethCol=null,orbCol=null,dragonCol=null,dgP=null,dgZ0=0,dgZ1=-8,dgRH=1;
@@ -74,7 +77,7 @@ function acqBoot3D(){
       ethCol[k*3]=Math.min(c3.r,1);ethCol[k*3+1]=Math.min(c3.g,1);ethCol[k*3+2]=Math.min(c3.b,1);}
   }
   function buildOrb(){
-    var R=3.0,k;var g1=new THREE.Color(0x2dd4ff),g2=new THREE.Color(0x34d399);
+    var R=3.0,k;var g1=cC.clone(),g2=cG.clone();
     for(k=0;k<N;k++){var p=parts[k];
       if(p.free){p.ox=p.tx;p.oy=p.ty;p.oz=p.tz;}
       else{var u=Math.random(),v=Math.random(),th=6.283*u,ph=Math.acos(2*v-1),rr=R+(Math.random()-0.5)*0.24;
