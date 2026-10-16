@@ -360,3 +360,28 @@ main .sec.full:not(.cta) h1{font-size:clamp(40px,6.4vw,84px)}
 @media(max-width:760px){main .sec > .wrap{padding:28px 22px;border-radius:18px}}
 /* SEO page: lighter closing box so the full diamond shows through at the bottom (owner, 2026-10-15) */
 body[data-shape="diamond"] main .sec.full.cta > .wrap{background:rgba(5,14,20,.42);border-color:rgba(255,255,255,.05);box-shadow:none}
+
+/* ============================================================
+   TIGHTER SPACING (owner, 2026-10-16)
+   Less air between and inside the reading boxes. The hero stays full-screen;
+   the SEO page keeps a full-screen closing section so the diamond still frames it.
+   ============================================================ */
+.sec{padding:56px 32px}
+.sec.full.cta{min-height:auto;padding-top:72px;padding-bottom:88px}
+body[data-shape="diamond"] .sec.full.cta{min-height:100vh;padding-top:56px;padding-bottom:56px}
+main .sec > .wrap{padding:36px 40px}
+.eyebrow{margin-bottom:12px}
+.lead{margin-top:14px;line-height:1.55}
+.ctas{margin-top:24px}
+.cards,.cases,.grid2,.principles{margin-top:26px}
+.steps{margin-top:28px}
+.faqs{margin-top:22px}
+.panel,.cmp-wrap{margin-top:26px}
+.founder{margin-top:28px}
+.cue{margin-top:36px}
+.hint{margin-top:18px}
+@media(max-width:760px){
+  .sec{padding:36px 16px}
+  .sec.full.cta{padding-top:44px;padding-bottom:56px}
+  main .sec > .wrap{padding:26px 20px}
+}
