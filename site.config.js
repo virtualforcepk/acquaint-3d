@@ -22,7 +22,8 @@ window.ACQ_CONFIG = {
   },
 
   /* Founder pricing ladder: prices rise 25% every five monthly clients.
-     Update TIER and SPOTS_LEFT by hand as clients sign. The counter reads:
+     The spots counter is NOT shown on the site (removed by the owner, 2026-10-15).
+     To bring it back, add <div class="tier" data-tier></div> to a page; it reads:
      "Tier {TIER} pricing - {SPOTS_LEFT} of {SPOTS_PER_TIER} spots left". */
   TIER: 1,
   SPOTS_LEFT: 5,
