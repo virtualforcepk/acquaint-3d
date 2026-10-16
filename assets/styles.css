@@ -337,11 +337,11 @@ main h2,main .lead,main .eyebrow,main .step p,main .step-n,main .faq summary,mai
 main .step p,main .fine{color:var(--dim)}
 
 /* ============================================================
-   THEME (owner, 2026-10-15): silver stars, gold highlighted copy, blue accents.
+   THEME (owner, 2026-10-15): silver stars, platinum highlighted copy, blue accents.
    --star-a / --star-b are read by assets/app.js as the particle colours.
-   --copy* colour the highlighted headline words. Accents keep the original blue.
+   --copy* colour the highlighted headline words (platinum). Accents keep the original blue.
    ============================================================ */
-:root{--star-a:#7d8993;--star-b:#c4cdd5;--copy-hi:#f9df92;--copy:#ecbd4f;--copy-lo:#dba43c}
+:root{--star-a:#7d8993;--star-b:#c4cdd5;--copy-hi:#ffffff;--copy:#dcdee0;--copy-lo:#a3a9b0}
 .grad{background-image:linear-gradient(120deg,var(--copy-hi) 0%,var(--copy) 50%,var(--copy-lo) 100%)}
 .atmos{background:radial-gradient(58% 48% at 50% 52%,rgba(205,214,222,.045),transparent 70%),
                   radial-gradient(70% 60% at 50% 114%,rgba(180,192,202,.07),transparent 70%)}
