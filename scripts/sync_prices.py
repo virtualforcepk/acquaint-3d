@@ -28,6 +28,7 @@ OFFERS = {"Managed website": "WEB_MONTHLY", "One-time build": "WEB_ONETIME", "SE
 META = {
     "website/index.html": "Custom, conversion-built, mobile-first website with hosting, SSL, analytics, and weekly updates. From {WEB_MONTHLY} / month + tax, or {WEB_ONETIME} one-time.",
     "seo/index.html": "Monthly keyword work, content, local listings, and clean backlinks so buyers find you on Google and in AI search. {SEO_MONTHLY} / month + tax.",
+    "property-management/index.html": "Websites and SEO for property-management companies. Built so owners find you when they search, and book a call when they land. From {WEB_MONTHLY} / month + tax.",
     "pk/index.html": "A website that brings in enquiries. SEO that makes it rank. Website from {WEB_MONTHLY} / month + tax, or {WEB_ONETIME} one-time. SEO {SEO_MONTHLY} / month + tax.",
 }
 amount = lambda s: re.sub(r"\D", "", s)          # "CAD 1,000" -> "1000"
