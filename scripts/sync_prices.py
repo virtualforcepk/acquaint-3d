@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Keep the HTML in step with site.config.js (the single source of truth for prices).
 
-Each page uses one price list: <body data-prices="PK"> -> PK, otherwise CA.
+Each page's DEFAULT currency: <body data-prices="PKR"> -> PKR, otherwise defaultCurrency (CAD).
+(Visitors can switch currency in the nav; the HTML carries the default currency as the no-JS fallback.)
 For every *.html file under the repo root this re-stamps:
   * every  <... data-price="KEY">...</...>   element -> that list's price string
   * every  <... data-tier>...</...>          element -> "Tier N pricing - S of P spots left"
@@ -21,7 +22,10 @@ def price_list(name):
     m = re.search(r"\b" + name + r"\s*:\s*\{([^}]*)\}", cfg)
     return dict(re.findall(r'(\w+)\s*:\s*"([^"]*)"', m.group(1)))
 
-LISTS = {"CA": price_list("CA"), "PK": price_list("PK")}
+CODES = re.findall(r"^\s{4}([A-Z]{3})\s*:\s*\{", cfg, re.M)
+LISTS = {c: price_list(c) for c in CODES}
+DEFAULT = re.search(r'defaultCurrency\s*:\s*"([A-Z]{3})"', cfg).group(1)
+ALIAS = {"CA": "CAD", "PK": "PKR"}
 num = lambda key: int(re.search(r"\b" + key + r"\s*:\s*(\d+)", cfg).group(1))
 TIER_TEXT = "Tier %d pricing \u00b7 %d of %d spots left" % (num("TIER"), num("SPOTS_LEFT"), num("SPOTS_PER_TIER"))
 OFFERS = {"Managed website": "WEB_MONTHLY", "One-time build": "WEB_ONETIME", "SEO Optimization": "SEO_MONTHLY"}
@@ -42,7 +46,8 @@ for p in sorted(ROOT.rglob("*.html")):
     rel = p.relative_to(ROOT).as_posix()
     t = orig = p.read_text(encoding="utf-8")
     m = re.search(r'<body[^>]*\bdata-prices="(\w+)"', t)
-    L = LISTS.get(m.group(1).upper() if m else "CA", LISTS["CA"])
+    code = ALIAS.get(m.group(1).upper(), m.group(1).upper()) if m else DEFAULT
+    L = LISTS.get(code, LISTS[DEFAULT])
     for k, v in L.items():
         t = re.sub(r'(<[^>]*\bdata-price="' + k + r'"[^>]*>)[^<]*(</)', lambda mm: mm.group(1) + v + mm.group(2), t)
     t = re.sub(r'(<[^>]*\bdata-tier\b[^>]*>)[^<]*(</)', lambda mm: mm.group(1) + TIER_TEXT + mm.group(2), t)
@@ -63,6 +68,6 @@ for p in sorted(ROOT.rglob("*.html")):
         p.write_text(t, encoding="utf-8")
         changed.append(rel)
 
-print("CA:", LISTS["CA"]); print("PK:", LISTS["PK"])
+print("currencies:", ", ".join(f"{c} {LISTS[c]['WEB_MONTHLY'].split()[1]}/{LISTS[c]['WEB_ONETIME'].split()[1]}/{LISTS[c]['SEO_MONTHLY'].split()[1]}" for c in LISTS), "| default", DEFAULT)
 print("counter:", TIER_TEXT.encode("ascii", "replace").decode())
 print("updated:", ", ".join(changed) if changed else "nothing (already in sync)")

@@ -8,7 +8,8 @@ Marketing site for **Acquaint Media** (Brampton, ON — premium websites and mon
 | `/` | Home: two products, founder pricing, proof, how it works, FAQ | arrow mark |
 | `/website` | Product 1 — Premium Website (managed vs one-time build) | dragon |
 | `/seo` | Product 2 — SEO Optimization | orb |
-| `/pk` | Self-contained offer page priced in PKR (products, plans table, SEO detail, FAQ) | arrow mark |
+| `/pk` | Self-contained offer page, defaults to PKR (products, plans table, SEO detail, FAQ) | arrow mark |
+| `/property-management` | Landing page for property-management companies (not in the nav) | eth |
 | `/about` | Founder and track record | arrow mark |
 | `/blog` | Posts | orb |
 | `/work/*` | Case studies | various |
@@ -16,16 +17,14 @@ Marketing site for **Acquaint Media** (Brampton, ON — premium websites and mon
 
 Removed routes `/lead-gen`, `/app`, `/industries/*`, and `/ads-management-services-mississauga` are 301-redirected in `vercel.json`.
 
-## Prices and the tier counter
-`site.config.js` is the **single source of truth** for every price on the site: two independent lists, the founder-pricing counter (`TIER`, `SPOTS_LEFT`). The main site (`/`, `/website`, `/seo`) shows the **CA** list only. The separate `/pk` page shows the **PK** list only, selected by `<body data-prices="PK">`. There is no toggle and no redirect. `assets/pricing.js` fills every `[data-price]` element from the page's list.
+## Prices and currencies
+`site.config.js` is the **single source of truth** for every price: one set price list per currency (CAD, USD, GBP, AED, PKR) — set prices, not conversions. Visitors pick their currency in the nav (`assets/pricing.js` injects the picker); the choice is remembered in `localStorage` (`acq_currency`) and never redirects. Default currency is CAD, except `/pk` (`<body data-prices="PKR">`).
 
-The HTML also carries the CA values as a no-JS fallback and inside JSON-LD. After editing `site.config.js`, run:
+The HTML carries the default currency as a no-JS fallback and inside JSON-LD. After editing `site.config.js`, run:
 
 ```bash
 python scripts/sync_prices.py
 ```
-
-It re-stamps the fallbacks, the JSON-LD offer prices, and regenerates the home FAQPage schema from the visible FAQ text. Idempotent.
 
 ## Stack
 Static HTML + CSS + vanilla JS. The particle engine is `assets/app.js` (Three.js r128, loaded from CDN). Shared `assets/styles.css`. No build step.

@@ -462,3 +462,14 @@ html.lenis,html.lenis body{height:auto}
 .motion-off [data-words] .w{color:inherit}
 @media (prefers-reduced-motion: reduce){.ticker-track{animation:none}}
 .cases.one{grid-template-columns:1fr;max-width:560px}
+
+/* ============================================================
+   CURRENCY PICKER (owner, 2026-10-17) — nav select, remembered per visitor
+   ============================================================ */
+.cur{display:inline-flex;align-items:center}
+.cur-select{appearance:none;-webkit-appearance:none;font-family:'Satoshi','Satoshi Fallback',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--ink);
+  background:rgba(255,255,255,.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236f93ff' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 11px center;
+  border:1px solid var(--line2);border-radius:999px;padding:7px 28px 7px 13px;cursor:pointer;transition:border-color .2s}
+.cur-select:hover,.cur-select:focus-visible{border-color:var(--cyan)}
+.cur-select option{background:#0b1a24;color:#eef6f5}
+@media(max-width:760px){.cur{align-self:flex-start;margin:20px 0 4px}.cur-select{font-size:15px;padding:10px 32px 10px 16px}}
