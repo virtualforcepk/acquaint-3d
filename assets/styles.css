@@ -461,3 +461,4 @@ html.lenis,html.lenis body{height:auto}
 [data-words] .w.on{color:#e8eef1}
 .motion-off [data-words] .w{color:inherit}
 @media (prefers-reduced-motion: reduce){.ticker-track{animation:none}}
+.cases.one{grid-template-columns:1fr;max-width:560px}
