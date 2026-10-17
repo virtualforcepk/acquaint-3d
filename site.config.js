@@ -21,10 +21,8 @@ window.ACQ_CONFIG = {
     PK: { WEB_MONTHLY: "PKR 20,000", WEB_ONETIME: "PKR 200,000", SEO_MONTHLY: "PKR 80,000" }
   },
 
-  /* Founder pricing ladder: prices rise 25% every five monthly clients.
-     The spots counter is NOT shown on the site (removed by the owner, 2026-10-15).
-     To bring it back, add <div class="tier" data-tier></div> to a page; it reads:
-     "Tier {TIER} pricing - {SPOTS_LEFT} of {SPOTS_PER_TIER} spots left". */
+  /* Founder-pricing ladder RETIRED (owner, 2026-10-16): no price-increase messaging on the site.
+     These values are unused and kept only so scripts/sync_prices.py keeps working. */
   TIER: 1,
   SPOTS_LEFT: 5,
   SPOTS_PER_TIER: 5
