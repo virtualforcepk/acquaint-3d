@@ -1,13 +1,69 @@
 {
   "redirects": [
-    { "source": "/lead-gen", "destination": "/website", "statusCode": 301 },
-    { "source": "/lead-gen/", "destination": "/website", "statusCode": 301 },
-    { "source": "/app", "destination": "/website", "statusCode": 301 },
-    { "source": "/app/", "destination": "/website", "statusCode": 301 },
-    { "source": "/industries", "destination": "/", "statusCode": 301 },
-    { "source": "/industries/", "destination": "/", "statusCode": 301 },
-    { "source": "/industries/:path*", "destination": "/", "statusCode": 301 },
-    { "source": "/ads-management-services-mississauga", "destination": "/seo", "statusCode": 301 },
-    { "source": "/ads-management-services-mississauga/", "destination": "/seo", "statusCode": 301 }
+    {
+      "source": "/lead-gen",
+      "destination": "/website",
+      "statusCode": 301
+    },
+    {
+      "source": "/lead-gen/",
+      "destination": "/website",
+      "statusCode": 301
+    },
+    {
+      "source": "/app",
+      "destination": "/website",
+      "statusCode": 301
+    },
+    {
+      "source": "/app/",
+      "destination": "/website",
+      "statusCode": 301
+    },
+    {
+      "source": "/industries",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/industries/",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/industries/:path*",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/ads-management-services-mississauga",
+      "destination": "/seo",
+      "statusCode": 301
+    },
+    {
+      "source": "/ads-management-services-mississauga/",
+      "destination": "/seo",
+      "statusCode": 301
+    },
+    {
+      "source": "/work/lease-at-ease",
+      "destination": "/about",
+      "statusCode": 301
+    },
+    {
+      "source": "/work/lease-at-ease/",
+      "destination": "/about",
+      "statusCode": 301
+    },
+    {
+      "source": "/dragon-test.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/dragon-view.html",
+      "destination": "/",
+      "statusCode": 301
+    }
   ]
 }
