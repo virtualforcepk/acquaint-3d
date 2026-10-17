@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "acquaint-3d.vercel.app"
+        }
+      ],
+      "destination": "https://acquaintmedia.ai/:path*",
+      "statusCode": 301
+    },
+    {
       "source": "/lead-gen",
       "destination": "/website",
       "statusCode": 301
