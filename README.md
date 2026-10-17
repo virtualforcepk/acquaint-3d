@@ -17,13 +17,14 @@ Marketing site for **Acquaint Media** (Brampton, ON — premium websites and mon
 
 Removed routes `/lead-gen`, `/app`, `/industries/*`, and `/ads-management-services-mississauga` are 301-redirected in `vercel.json`.
 
-## Prices and currencies
-`site.config.js` is the **single source of truth** for every price: one set price list per currency (CAD, USD, GBP, AED, PKR) — set prices, not conversions. Visitors pick their currency in the nav (`assets/pricing.js` injects the picker); the choice is remembered in `localStorage` (`acq_currency`) and never redirects. Default currency is CAD, except `/pk` (`<body data-prices="PKR">`).
+## Prices and the currency converter
+`site.config.js` is the **single source of truth**. The only set prices are in **CAD** (website 100/month or 1,000 one-time, SEO 400/month, all before tax). Visitors pick a currency in the nav (`assets/pricing.js` injects the picker) and see those CAD prices converted at today's exchange rate, rounded to clean figures, with a note that they're converted from CAD. Rates come from the free currency-api feed on jsDelivr (mirror as backup), cached per visitor for 12 hours, with a snapshot in the config as the last resort. The choice is remembered in `localStorage` (`acq_currency`); default CAD, `/pk` defaults to PKR. Search-engine price data (JSON-LD) is always in CAD.
 
-The HTML carries the default currency as a no-JS fallback and inside JSON-LD. After editing `site.config.js`, run:
+After editing `site.config.js`, run:
 
 ```bash
-python scripts/sync_prices.py
+python scripts/sync_prices.py          # re-stamp fallbacks, JSON-LD, meta
+python scripts/sync_prices.py --rates  # also refresh the stored rate snapshot
 ```
 
 ## Stack
